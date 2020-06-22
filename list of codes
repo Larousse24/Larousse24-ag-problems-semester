@@ -1,0 +1,15 @@
+library(tidyverse)
+library(dplyr)
+view(Dry_Biomass_RAW_2019_Winter_TREC)
+Dry_Biomass_RAW_2019_Winter_TREC %>%
+select(Seasons, Croptrt, LeavesStemsFresh_tha, LeavesStemsDry_tha) %>%
+filter(Croptrt == "SHSS") %>%
+mutate(watercontent = LeavesStemsFresh_tha-LeavesStemsDry_tha) 
+
+library(dplyr)
+group_by(Dry_Biomass_RAW_2019_Winter_TREC, Seasons, Croptrt, LeavesStemsFresh_tha )  
+group_by(Dry_Biomass_RAW_2019_Winter_TREC, Croptrt )  
+group_by(Dry_Biomass_RAW_2019_Winter_TREC, LeavesStemsFresh_tha )  
+summary(Dry_Biomass_RAW_2019_Winter_TREC)
+summarise(Dry_Biomass_RAW_2019_Winter_TREC, mymean=mean(LeavesStemsFresh_tha))
+summarise(Dry_Biomass_RAW_2019_Winter_TREC, mysd=sd(LeavesStemsFresh_tha))
