@@ -4,7 +4,7 @@ view(Dry_Biomass_RAW_2019_Winter_TREC)
 Dry_Biomass_RAW_2019_Winter_TREC %>%
 select(Seasons, Croptrt, LeavesStemsFresh_tha, LeavesStemsDry_tha) %>%
 filter(Croptrt == "SHSS") %>%
-mutate(watercontent = LeavesStemsFresh_tha-LeavesStemsDry_tha) 
+mutate(watercontent = LeavesStemsFresh_tha - LeavesStemsDry_tha) 
 
 library(dplyr)
 group_by(Dry_Biomass_RAW_2019_Winter_TREC, Seasons, Croptrt, LeavesStemsFresh_tha )  
