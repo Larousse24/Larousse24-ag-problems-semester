@@ -13,3 +13,27 @@ group_by(Dry_Biomass_RAW_2019_Winter_TREC, LeavesStemsFresh_tha )
 summary(Dry_Biomass_RAW_2019_Winter_TREC)
 summarise(Dry_Biomass_RAW_2019_Winter_TREC, mymean=mean(LeavesStemsFresh_tha))
 summarise(Dry_Biomass_RAW_2019_Winter_TREC, mysd=sd(LeavesStemsFresh_tha))
+
+
+
+Assignment#6
+
+library(tidyverse)
+library(dplyr)
+view(Dry_Biomass_RAW_2019_Winter_TREC)
+newdat<-Dry_Biomass_RAW_2019_Winter_TREC
+ select(newdat, Seasons, Croptrt, LeavesStemsFresh_tha, LeavesStemsDry_tha) 
+ newedat<-filter(newdat, Croptrt == "SHSS", Seasons == "winter"  ) 
+newdata<-mutate(newedat, watercontent = LeavesStemsFresh_tha-LeavesStemsDry_tha)  
+
+library(ggplot2) 
+  ggplot(data = newdata) + geom_point(mapping = aes(x = LeavesStemsFresh_tha, y = Croptrt))
+  ggplot 
+
+  
+library(dplyr)
+group_by(newdat, Seasons, Croptrt, LeavesStemsFresh_tha ) 
+
+summarize(newdat, delay = mean(LeavesStemsFresh_tha, na.rm = TRUE))
+summarise(newdat, delay = sd(LeavesStemsFresh_tha, na.rm = TRUE))
+  library(ggplot2) 
