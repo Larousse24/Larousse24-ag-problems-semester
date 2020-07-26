@@ -38,7 +38,7 @@ X<-datad$CropTrt
 Y<-datad$Chloro
 Z<-datad$Height_cm
 ?aov
-fit <- aov(Y ~ Z, data = datad)
+fit <- aov(X ~ Z, data = datad)
 summary (fit)
 
 #HSD test
@@ -51,7 +51,7 @@ qqnorm(stdRes,ylab="Standardized Residuals", xlab="Theoretical Quantiles")
 qqline(stdRes, col=2,lwd=2)
 
 #linear regression 
-fit <- lm(X ~ Z + Y, data=datad)
+fit <- lm(Y ~ Z, data=datad)
 summary(fit) 
 plot(predict.lm(fit),resid,cex=2,cex.lab=1.5,cex.axis=1.15,ylim=c(-5,5), xlim=c(10,15), ylab="Residuals", xlab= "Predicted Y")
 abline(a=0,b=0, col="red", lwd=3,lty="dashed")
