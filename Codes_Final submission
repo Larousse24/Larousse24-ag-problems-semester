@@ -1,0 +1,60 @@
+#Install packages 
+library (tidyverse) 
+library (dplyr) 
+library (ggplot2)
+
+#Uplaod dataset 
+newdata <- HC_W6_RAW_2019_Winter_TREC
+
+#select the data needed for the analysis 
+newdat <- select (newdata, Location, CropTrt, Height_cm, Height_cm.1, Height_cm.2, 
+                        Chlorophyll_CCI, Chlorophyll_CCI.1, Chlorophyll_CCI.2)
+
+#filter the only treatment needed 
+newdatat <- filter (newdat, CropTrt == "SHSS")
+
+#mutate to have the average chlorophyll 
+newerdata <- mutate (newdatat, Chloro = (Chlorophyll_CCI + Chlorophyll_CCI.1 + Chlorophyll_CCI.2 / 3))
+
+#ggplot of the Chlorophyll content and different Height 
+ggplot (data = newerdata) + geom_point (mapping = aes(x = Height_cm.1, y = Chloro)) ggplot (data = newerdata) +
+          geom_point (mapping = aes(x = Height_cm.2, y = Chloro)) 
+          ggplot (data = newerdata) + geom_point (mapping = aes(x = Height_cm, y = Chloro))
+
+#data vizualization 
+ggplot (data = newerdata) + geom_point (mapping = aes (x = Height_cm, y = Chloro)) + facet_wrap (~Chloro, nrow = 2) 
+ggplot (data = newerdata) + geom_point (mapping = aes (x = Height_cm.1, y = Chloro)) + facet_wrap (~Chloro, nrow = 2) 
+ggplot (data = newerdata) + geom_point (mapping = aes (x = Height_cm.2, y = Chloro)) + facet_wrap (~Chloro, nrow = 2)
+
+#group-by based  
+data <- group_by (newerdata, CropTrt, Height_cm, Height_cm.1, Height_cm.2, Chloro)
+
+#summarize 
+datad <- summarize (data, Chloro1 = mean (Chloro, na.rm = TRUE), 
+                    Height1 = mean (Height_cm.2, na.rm = TRUE)) 
+summary (datad)
+
+#data vizualization in graphic 
+ggplot (data = datad) + geom_point (mapping = aes (x = Height1, y = Chloro1)) ggplot (data = datad) + 
+            geom_point (mapping = aes (x = Height1, y = Chloro)) + facet_wrap (~Height_cm, nrow = 2)
+
+#one way anova 
+X <- datad $ CropTrt 
+Y <- datad $ Chloro 
+Z <- datad $ Height_cm.2 
+
+?aov 
+fit <- aov (X ~ Y, data = datad ) 
+summary (fit)
+
+#HSD test 
+TukeyHSD (fit) 
+plot (TukeyHSD (fit))
+
+#normality
+stdRes <- rstandard (fit) qqnorm (stdRes, ylab = " Standardized Residuals ", 
+            xlab = " Theoretical Quantiles ") qqline (stdRes, col = 2,lwd = 2)
+
+#linear regression
+fit <- lm (Y ~ Z, data = datad) 
+summary (fit)
